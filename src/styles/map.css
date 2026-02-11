@@ -1,0 +1,56 @@
+:root{
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --blue-600: #2563eb;
+  --max-width: 1120px;
+}
+
+/* Root wrapper */
+.mapview-root{
+  background: var(--bg);
+  color: #0f172a;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  padding-top: 4.5rem; /* align with app header spacing */
+  padding-bottom: 3rem;
+}
+
+/* Container */
+.mapview-container{
+  max-width: var(--max-width);
+  padding: 0 1rem;
+}
+
+/* Map wrapper */
+.mapview-mapwrap{
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #e6eef8;
+  box-shadow: 0 10px 24px rgba(2,6,23,0.04);
+}
+
+/* Leaflet container sizing override */
+.mapview-mapwrap .leaflet-container{
+  height: 60vh !important;
+  width: 100% !important;
+  min-height: 320px;
+}
+
+/* Popup content tweaks */
+.mapview-popup h3{ font-size: 1rem; margin-bottom: 0.35rem; color: #0f172a; }
+.mapview-popup p{ margin: 0.15rem 0; color: var(--muted); }
+.mapview-popup img{ border-radius: 0.5rem; display:block; margin-top:0.5rem; object-fit:cover; }
+
+/* Empty state */
+.mapview-container > p.mt-4{
+  margin-top: 1rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px){
+  .mapview-mapwrap .leaflet-container{ height: 50vh !important; }
+  .mapview-container{ padding: 0 0.75rem; }
+}

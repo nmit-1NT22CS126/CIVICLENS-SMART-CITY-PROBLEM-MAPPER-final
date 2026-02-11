@@ -1,0 +1,235 @@
+.map-page {
+  height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.map-header {
+  margin-bottom: 20px;
+}
+
+.map-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.map-header p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.map-legend {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.legend-item .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-item .dot.pending {
+  background-color: #EAB308;
+}
+
+.legend-item .dot.progress {
+  background-color: #3B82F6;
+}
+
+.legend-item .dot.resolved {
+  background-color: #22C55E;
+}
+
+.legend-item .dot.rejected {
+  background-color: #EF4444;
+}
+
+.map-wrapper {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  z-index: 1;
+  min-height: 400px;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Loading State */
+.map-loading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.map-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3B82F6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error State */
+.map-error {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: #fef2f2;
+  border-radius: 12px;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.map-error button {
+  padding: 0.5rem 1.25rem;
+  background: #3B82F6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.map-error button:hover {
+  background: #2563eb;
+}
+
+/* Empty State */
+.map-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+/* Popup Styles */
+.map-popup-content {
+  padding: 0.5rem;
+  min-width: 200px;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.popup-header h3 {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.popup-header .status-badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.popup-header .status-pending {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.popup-header .status-progress {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.popup-header .status-resolved {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.popup-header .status-rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.popup-description {
+  font-size: 0.85rem;
+  color: #475569;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.popup-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.popup-meta .tracking-id {
+  font-weight: 500;
+  color: #3B82F6;
+}
+
+.popup-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background: #3B82F6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.popup-btn:hover {
+  background: #2563eb;
+}
+
+/* Custom Marker Styles */
+.custom-marker {
+  background: transparent;
+  border: none;
+}

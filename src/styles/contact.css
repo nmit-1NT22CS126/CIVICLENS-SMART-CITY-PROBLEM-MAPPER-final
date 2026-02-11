@@ -1,0 +1,126 @@
+:root {
+  --blue-50: #eff6ff;
+  --blue-600: #2563eb;
+  --blue-700: #1e40af;
+  --gray-50: #f8fafc;
+  --gray-200: #e5e7eb;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+}
+
+.contact-root {
+  min-height: 100vh;
+  background: var(--gray-50);
+  padding: 5rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+.contact-container {
+  max-width: 48rem;
+  width: 100%;
+  background: white;
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.contact-container h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--blue-700);
+  margin-bottom: 1rem;
+}
+
+.contact-intro {
+  text-align: center;
+  color: var(--gray-700);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--gray-800);
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 2px solid var(--gray-200);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--blue-600);
+  box-shadow: 0 0 0 3px var(--blue-50);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.submit-btn {
+  background: var(--blue-600);
+  color: white;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.submit-btn:hover {
+  background: var(--blue-700);
+  transform: translateY(-1px);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .contact-root {
+    padding: 2rem 1rem;
+  }
+  
+  .contact-container {
+    padding: 1.5rem;
+  }
+  
+  .contact-container h1 {
+    font-size: 2rem;
+  }
+  
+  .contact-intro {
+    font-size: 1rem;
+  }
+}

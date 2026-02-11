@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicLens System Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            padding: 40px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #1a1a1a;
+        }
+        
+        .layer {
+            border: 2px solid #333;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #f5f5f5;
+            overflow: hidden;
+        }
+        
+        .layer-header {
+            background: #e0e0e0;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            border-bottom: 2px solid #333;
+        }
+        
+        .layer-content {
+            padding: 20px;
+        }
+        
+        .layer-subtitle {
+            text-align: center;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        
+        .components-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .component-box {
+            border: 2px solid #666;
+            padding: 12px 20px;
+            background: white;
+            text-align: center;
+            min-width: 100px;
+            border-radius: 4px;
+        }
+        
+        .component-box.small {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .components-note {
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #444;
+        }
+        
+        .arrow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .arrow {
+            width: 3px;
+            height: 40px;
+            background: #333;
+            position: relative;
+        }
+        
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #333;
+        }
+        
+        .arrow-label {
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .split-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .split-arrow {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .split-arrow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 3px;
+            height: 20px;
+            background: #333;
+        }
+        
+        .split-arrow::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 25%;
+            right: 25%;
+            height: 3px;
+            background: #333;
+        }
+        
+        .split-arrow-left,
+        .split-arrow-right {
+            position: absolute;
+            top: 20px;
+            width: 3px;
+            height: 40px;
+            background: #333;
+        }
+        
+        .split-arrow-left {
+            left: 25%;
+        }
+        
+        .split-arrow-right {
+            right: 25%;
+        }
+        
+        .split-arrow-left::after,
+        .split-arrow-right::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid #333;
+        }
+        
+        .half-layer {
+            flex: 1;
+            max-width: 48%;
+        }
+        
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .section-grid.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .section-grid.two-col {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .middleware-box {
+            background: white;
+            border: 1px solid #999;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        
+        .middleware-box h4 {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .middleware-box ul {
+            list-style: disc;
+            padding-left: 20px;
+            font-size: 13px;
+        }
+        
+        .external-services {
+            position: absolute;
+            top: 0;
+            right: -220px;
+            width: 200px;
+            border: 2px solid #333;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .external-services h3 {
+            background: #e0e0e0;
+            padding: 10px;
+            font-size: 14px;
+            border-bottom: 2px solid #333;
+            text-align: center;
+        }
+        
+        .external-services ul {
+            padding: 15px;
+            list-style: disc;
+            padding-left: 30px;
+            font-size: 13px;
+        }
+        
+        .main-content {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .routers-section {
+            background: white;
+            border: 1px solid #999;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        
+        .routers-section h4 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .routers-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .router-box {
+            border: 2px solid #666;
+            padding: 10px 15px;
+            background: #f9f9f9;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .flex-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .flex-row > div {
+            flex: 1;
+        }
+        
+        .ml-components {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .ml-box {
+            border: 2px solid #666;
+            padding: 10px;
+            background: white;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .db-components {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .db-box {
+            border: 2px solid #666;
+            padding: 10px;
+            background: white;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+            }
+            .container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CIVICLENS SYSTEM</h1>
+        
+        <div class="main-content">
+            <!-- External Services Box -->
+            <div class="external-services">
+                <h3>EXTERNAL SERVICES</h3>
+                <ul>
+                    <li>OpenStreetMap</li>
+                    <li>Leaflet.js</li>
+                    <li>EasyOCR Models</li>
+                    <li>Tesseract OCR</li>
+                </ul>
+            </div>
+            
+            <!-- Frontend Layer -->
+            <div class="layer">
+                <div class="layer-header">FRONTEND LAYER</div>
+                <div class="layer-content">
+                    <div class="layer-subtitle">React + Vite Application (Port 5173)</div>
+                    <div class="components-row">
+                        <div class="component-box">Home Page</div>
+                        <div class="component-box">Report Issue</div>
+                        <div class="component-box">View Reports</div>
+                        <div class="component-box">Map View<br><small>(Leaflet)</small></div>
+                        <div class="component-box">About</div>
+                        <div class="component-box">Contact</div>
+                    </div>
+                    <div class="components-row">
+                        <div class="component-box small">User Dashboard</div>
+                        <div class="component-box small">Admin Dashboard</div>
+                        <div class="component-box small">Track Complaint</div>
+                        <div class="component-box small">Login/Register</div>
+                    </div>
+                    <div class="components-note">
+                        <strong>Components:</strong> Navbar, Footer, Form Validation, Image Upload, ProtectedRoute, ToastProvider
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="arrow-container">
+                <div class="arrow"></div>
+                <div class="arrow-label">HTTP/REST API</div>
+            </div>
+            
+            <!-- Backend Layer -->
+            <div class="layer">
+                <div class="layer-header">BACKEND LAYER</div>
+                <div class="layer-content">
+                    <div class="layer-subtitle">FastAPI Application (Port 8000)</div>
+                    
+                    <div class="routers-section">
+                        <h4>API ROUTERS</h4>
+                        <div class="routers-grid">
+                            <div class="router-box">Complaints<br>Router</div>
+                            <div class="router-box">Users<br>Router</div>
+                            <div class="router-box">Auth<br>Router</div>
+                            <div class="router-box">Admin<br>Router</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-row">
+                        <div class="middleware-box">
+                            <h4>MIDDLEWARE</h4>
+                            <ul>
+                                <li>CORS Handler</li>
+                                <li>JWT Authentication</li>
+                                <li>Error Handling</li>
+                            </ul>
+                        </div>
+                        <div class="middleware-box">
+                            <h4>SCHEMAS & AUTH</h4>
+                            <ul>
+                                <li>Pydantic Models</li>
+                                <li>JWT Token Generation</li>
+                                <li>Password Hashing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Split Arrow -->
+            <div style="display: flex; justify-content: center; padding: 20px 0;">
+                <svg width="600" height="60" viewBox="0 0 600 60">
+                    <line x1="300" y1="0" x2="300" y2="20" stroke="#333" stroke-width="3"/>
+                    <line x1="150" y1="20" x2="450" y2="20" stroke="#333" stroke-width="3"/>
+                    <line x1="150" y1="20" x2="150" y2="50" stroke="#333" stroke-width="3"/>
+                    <line x1="450" y1="20" x2="450" y2="50" stroke="#333" stroke-width="3"/>
+                    <polygon points="150,60 142,45 158,45" fill="#333"/>
+                    <polygon points="450,60 442,45 458,45" fill="#333"/>
+                </svg>
+            </div>
+            
+            <!-- Split Layers -->
+            <div class="split-container">
+                <!-- AI/ML Layer -->
+                <div class="layer half-layer">
+                    <div class="layer-header">AI/ML LAYER</div>
+                    <div class="layer-content">
+                        <div class="layer-subtitle">TensorFlow/Keras</div>
+                        <div class="ml-components">
+                            <div class="ml-box">MobileNetV2<br>Model<br><small>(87.89% acc)</small></div>
+                            <div class="ml-box">Text<br>Analyzer</div>
+                            <div class="ml-box">OCR Geo<br>Extractor</div>
+                            <div class="ml-box">Complaint<br>Verifier<br><small>(Pipeline)</small></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Database Layer -->
+                <div class="layer half-layer">
+                    <div class="layer-header">DATABASE LAYER</div>
+                    <div class="layer-content">
+                        <div class="layer-subtitle">Supabase (PostgreSQL)</div>
+                        <div class="db-components">
+                            <div class="db-box">Tables<br><small>(complaints, users, profiles)</small></div>
+                            <div class="db-box">Storage<br>Bucket</div>
+                            <div class="db-box">Authentication<br><small>(JWT + RLS)</small></div>
+                            <div class="db-box">Real-time<br><small>(WebSockets)</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; color: #666; font-size: 14px;">
+            <p><strong>CivicLens</strong> - AI-Powered Civic Issue Reporting & Management System</p>
+            <p>Model Accuracy: 87.89% | Categories: Garbage, Potholes, Waterlogging, Invalid</p>
+        </div>
+    </div>
+</body>
+</html>
